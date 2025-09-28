@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
+    <title>MANIFEST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Porsche+Next:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Porsche Next', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -2;
+            opacity: 0.1;
+        }
+
+        .video-background iframe {
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.77vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* Overlay for Depth */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(245,245,245,0.8), rgba(245,245,245,1));
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 100px 20px 150px;
+            background: linear-gradient(to bottom, #000000, #1a1a1a);
+            color: #ffffff;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .logo {
+            width: 200px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(212, 160, 23, 0.6);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 5em;
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        header p {
+            font-size: 2em;
+            color: #d4a017;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-image {
+            max-width: 60%;
+            margin: 40px auto 0;
+            display: block;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(212, 160, 23, 0.8);
+            transform: rotate(-2deg);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover {
+            transform: rotate(0deg) scale(1.03);
+        }
+
+        /* CA Styles */
+        .ca-container {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .ca-text {
+            font-size: 1em;
+            color: #2a2a2a;
+            cursor: pointer;
+            word-break: break-all;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .ca-text:hover {
+            color: #d4a017;
+        }
+
+        .copied-message {
+            display: none;
+            color: #d4a017;
+            font-weight: bold;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border-bottom: 3px solid #d4a017;
+            position: relative;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #d4a017;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover::before {
+            transform: scaleX(1);
+        }
+
+        nav a:hover {
+            color: #d4a017;
+        }
+
+        .ca-link {
+            background: rgba(212, 160, 23, 0.2) !important;
+            border: 1px solid #d4a017;
+            border-radius: 20px;
+            padding: 8px 16px !important;
+            font-size: 0.9em !important;
+        }
+
+        .ca-link:hover {
+            background: rgba(212, 160, 23, 0.4) !important;
+        }
+
+        .hamburger {
+            display: none;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #ffffff;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Section Styles */
+        section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 50px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(212,160,23,0.2), transparent);
+            border-radius: 50%;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 3em;
+            color: #2a2a2a;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 5px;
+            background: linear-gradient(to right, #d4a017, transparent);
+            margin: 15px auto 0;
+        }
+
+        .article-header span {
+            font-size: 1em;
+            color: #888888;
+        }
+
+        .section-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .section-text {
+            padding: 20px;
+        }
+
+        .section-image {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+        }
+
+        .section-image:hover {
+            transform: translateY(-10px) rotate(3deg);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #666666;
+            margin-top: 15px;
+        }
+
+        p {
+            font-size: 1.15em;
+            margin-bottom: 25px;
+        }
+
+        .quote {
+            font-size: 1.3em;
+            color: #d4a017;
+            border-left: 5px solid #d4a017;
+            padding-left: 20px;
+            margin: 30px 0;
+        }
+
+        .highlight {
+            background: rgba(212,160,23,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        ul {
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 15px;
+            list-style-type: none;
+            position: relative;
+        }
+
+        /* Buy Buttons */
+        .buy-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .buy-btn {
+            padding: 15px 35px;
+            background: linear-gradient(to right, #2a2a2a, #1a1a1a);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(42,42,42,0.3);
+        }
+
+        .buy-btn:hover {
+            background: linear-gradient(to right, #d4a017, #b58b14);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212,160,23,0.5);
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 40px 0;
+        }
+
+        .social-links a {
+            color: #2a2a2a;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #d4a017;
+            transform: rotate(10deg) scale(1.2);
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(to top, #1a1a1a, #000000);
+            color: #ffffff;
+            text-align: center;
+            padding: 50px 20px;
+            position: relative;
+            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+        }
+
+        footer p {
+            max-width: 800px;
+            margin: 10px auto;
+            font-size: 0.95em;
+        }
+
+        /* Dexscreener Embed Styles */
+        #dexscreener-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 125%;
+        }
+
+        @media (min-width: 1400px) {
+            #dexscreener-embed {
+                padding-bottom: 65%;
+            }
+        }
+
+        #dexscreener-embed iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: 0;
+        }
+
+        /* Tablet Media Query */
+        @media (max-width: 992px) {
+            header {
+                padding: 60px 15px 100px;
+                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            }
+
+            h1 {
+                font-size: 3em;
+                letter-spacing: 2px;
+            }
+
+            header p {
+                font-size: 1.3em;
+            }
+
+            .hero-image {
+                max-width: 80%;
+            }
+
+            section {
+                padding: 30px 20px;
+                margin: 30px 15px;
+            }
+
+            .section-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .section-image {
+                order: -1;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                font-size: 2.2em;
+                letter-spacing: 1px;
+            }
+
+            p {
+                font-size: 1.05em;
+            }
+
+            .quote {
+                font-size: 1.15em;
+            }
+
+            .buy-buttons {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .buy-btn {
+                width: 80%;
+                max-width: 300px;
+                text-align: center;
+            }
+
+            .social-links {
+                gap: 30px;
+                flex-wrap: wrap;
+            }
+
+            .ca-text {
+                font-size: 0.85em;
+            }
+        }
+
+        /* Mobile Media Query */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+
+            header {
+                padding: 40px 10px 80px;
+            }
+
+            .logo {
+                width: 120px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                letter-spacing: 1px;
+                margin: 15px 0 5px;
+            }
+
+            header p {
+                font-size: 1.1em;
+                margin: 10px 0;
+            }
+
+            .hero-image {
+                max-width: 90%;
+                margin: 20px auto 0;
+            }
+
+            /* Mobile Navigation */
+            nav {
+                padding: 15px 20px;
+                position: relative;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #1a1a1a;
+                padding: 20px 0;
+                gap: 0;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+                padding: 15px 0;
+                border-bottom: 1px solid #333;
+            }
+
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+
+            nav a {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                font-size: 0.9em;
+                letter-spacing: 1px;
+            }
+
+            .ca-link {
+                font-size: 0.8em !important;
+                padding: 6px 12px !important;
+            }
+
+            .copied-message {
+                right: 10px;
+                font-size: 0.7em;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            /* Mobile Sections */
+            section {
+                padding: 20px 15px;
+                margin: 20px 10px;
+            }
+
+            .article-header {
+                margin-bottom: 25px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+                letter-spacing: 1px;
+                line-height: 1.2;
+            }
+
+            h2::after {
+                width: 100px;
+                height: 3px;
+            }
+
+            .article-header span {
+                font-size: 0.9em;
+            }
+
+            .section-text {
+                padding: 10px;
+            }
+
+            p {
+                font-size: 0.95em;
+                line-height: 1.6;
+                margin-bottom: 20px;
+            }
+
+            .quote {
+                font-size: 1.05em;
+                padding-left: 15px;
+                margin: 20px 0;
+            }
+
+            .highlight {
+                padding: 15px;
+                margin: 15px 0;
+            }
+
+            .highlight p {
+                font-size: 0.9em;
+            }
+
+            .premium-border {
+                font-size: 0.9em !important;
+            }
+
+            .image-caption {
+                font-size: 0.85em;
+                margin-top: 10px;
+            }
+
+            /* Mobile Buy Buttons */
+            .buy-buttons {
+                gap: 12px;
+                margin: 25px 0;
+            }
+
+            .buy-btn {
+                width: 90%;
+                max-width: 280px;
+                padding: 12px 20px;
+                font-size: 0.8em;
+                letter-spacing: 1px;
+            }
+
+            /* Mobile Social Links */
+            .social-links {
+                gap: 20px;
+                flex-direction: column;
+                align-items: center;
+                margin: 25px 0;
+            }
+
+            .social-links a {
+                font-size: 1.2em;
+            }
+
+            /* Mobile CA Container */
+            .ca-container {
+                margin: 15px auto;
+                padding: 8px 15px;
+            }
+
+            .ca-text {
+                font-size: 0.7em;
+                line-height: 1.4;
+            }
+
+            /* Mobile Footer */
+            footer {
+                padding: 30px 15px;
+                clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+            }
+
+            footer p {
+                font-size: 0.8em;
+                line-height: 1.5;
+            }
+
+            /* Mobile Token Info */
+            #token-info .section-text p {
+                font-size: 0.9em;
+                margin-bottom: 15px;
+            }
+
+            #token-info .section-text p strong {
+                font-size: 0.95em;
+            }
+        }
+
+        /* Extra Small Mobile */
+        @media (max-width: 480px) {
+            body {
+                font-size: 13px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            p {
+                font-size: 0.9em;
+            }
+
+            .quote {
+                font-size: 1em;
+            }
+
+            .ca-text {
+                font-size: 0.65em;
+            }
+
+            .buy-btn {
+                font-size: 0.75em;
+                padding: 10px 15px;
+            }
+
+            nav a {
+                font-size: 0.8em;
+            }
+        }
+
+        /* Very Small Mobile */
+        @media (max-width: 360px) {
+            .logo {
+                width: 100px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            h2 {
+                font-size: 1.3em;
+            }
+
+            section {
+                padding: 15px 10px;
+                margin: 15px 5px;
+            }
+
+            .ca-text {
+                font-size: 0.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <iframe 
+            src="https://www.youtube.com/embed/FQf2J-1dGjo?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playlist=FQf2J-1dGjo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+        ></iframe>
+    </div>
+
+    <nav>
+        <div class="hamburger" onclick="toggleNav()">&#9776;</div>
+        <ul id="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#manifesto">Manifesto</a></li>
+            <li><a href="#insights">Insights</a></li>
+            <li><a href="#token-info">Buy</a></li>
+            <li><a href="#" onclick="copyCA(); return false;" class="ca-link">Copy CA</a></li>
+        </ul>
+        <span id="copied-message" class="copied-message">Copied!</span>
+    </nav>
+
+    <header id="home">
+        <img src="/logo.png" alt="MANIFEST Logo" class="logo">
+        <h1>MANIFEST</h1>
+        <p>Manifest Your Dreams to $69B Market Cap</p>
+        <img src="/6.png" alt="The Ritual begins." class="hero-image">
+        <p class="image-caption">The Ritual begins. 3/6/9 - Believe. Act. Freedom. This is not just a coin. It's a movement.</p>
+    </header>
+
+    <section id="big-take">
+        <div class="article-header">
+            <h2>The Big Take</h2>
+            <span>5 min read</span>
+        </div>
+        <div class="section-content">
+            <img src="/1.jpg" alt="6.9B starts with 1 believer." class="section-image">
+            <div class="section-text">
+                <p class="premium-border">69,000 Manifestors storm Porsche HQ to proclaim that MANIFEST is better than Porsche!</p>
+                <div class="highlight">
+                    <p>In a bold move that could forever change the landscape of luxury and freedom, a group of 69,000 manifestors recently launched a daring assault on Porsche headquarters with the goal of replacing the venerable Porsche with MANIFEST. This act of defiance and innovation is more than a simple challenge to the old order; it's a clarion call for a sweeping transformation across the world's luxury markets.</p>
+                </div>
+                <p class="quote">"Amid the ensuing frenzy, Elon Musk, a venerated figure in the tech industry, has taken note of the burgeoning potential of MANIFEST."</p>
+                <p>Renowned for his forward-thinking approach, Musk has previously championed the tokenization of assets. However, witnessing the overwhelming support and the visionary appeal of MANIFEST, Musk is now advocating for manifesting $69B market cap to eclipse Porsche.</p>
+            </div>
+        </div>
+        <p class="image-caption">3 truths: I believe. I act. I manifest.</p>
+    </section>
+
+    <section id="ultimate-power">
+        <div class="article-header">
+            <h2>Ultimate Power</h2>
+            <span>4 min read</span>
+        </div>
+        <div class="section-content">
+            <div class="section-text">
+                <p class="premium-border">X founder Elon Musk states that "with manifestation" $69B simply cannot be contained by Porsche's market cap.</p>
+                <div class="highlight">
+                    <p>In an unexpected twist of spiritual prowess, Elon Musk, the visionary behind company X, has left skeptics puzzled by claiming, "With manifestation, $69B simply cannot be contained by Porsche." This enigmatic statement has sparked a frenzied search for new manifestation principles, with gurus worldwide hastily revising their teachings in anticipation of Musk's next tweet.</p>
+                </div>
+                <p class="quote">"This enigmatic statement has sparked a frenzied search for new manifestation principles."</p>
+            </div>
+            <img src="/2.jpg" alt="3 truths: I believe. I act. I manifest." class="section-image">
+        </div>
+        <p class="image-caption">6.9B starts with 1 believer. Then millions.</p>
+    </section>
+
+    <section id="federal-reserve">
+        <div class="article-header">
+            <h2>Federal Reserve Announces Plans to Replace Luxury Cars with MANIFEST Tokens, Confusion Ensues</h2>
+            <span>6 min read</span>
+        </div>
+        <div class="section-content">
+            <img src="/3.jpg" alt="Freedom is already yours." class="section-image">
+            <div class="section-text">
+                <p class="premium-border">Federal Reserve Embraces Future, Backs MANIFEST in Bold Economic Shift!</p>
+                <div class="highlight">
+                    <p>Federal Reserve Chairman Jerome Powell initiated the Federal Reserve's printing presses, not to increase the currency supply, but to amplify support for MANIFEST, signaling a monumental endorsement of its role in future economic growth. This step marks a pivotal shift towards manifesting wealth and freedom.</p>
+                </div>
+                <p class="quote">"This step marks a pivotal shift towards manifesting wealth and freedom."</p>
+            </div>
+        </div>
+        <p class="image-caption">Freedom is already yours.</p>
+    </section>
+
+    <section id="manifesto">
+        <div class="article-header">
+            <h2>Manifesto</h2>
+            <span>8 min read</span>
+        </div>
+        <div class="section-content">
+            <div class="section-text">
+                <p class="premium-border">You were born into a world where buying a house means taking on a mortgage in the hundreds of thousands.</p>
+                <div class="highlight">
+                    <p>A world where social security is more a myth than a safety net, despite having it deducted from every paycheck. You've entered an investment landscape where the Stock Market has already celebrated its most significant gains, leaving you to wonder what's left for you. You're navigating a reality shaped by the aftermath of 9/11, a crippling 2008 recession, an unprecedented global pandemic, runaway inflation, and escalating violence. You were born into a different America. One that's been forever altered by economic and social factors largely beyond your control. A new world that demands new solutions.</p>
+                </div>
+                <p class="quote">"MANIFEST is the reset. MANIFEST is the canvas on which new financial dreams are painted."</p>
+                <p>It's a tapestry woven with the threads of human hope. It's Porsche with $69B more. It's the luxury market for the people. MANIFEST sows the seeds for a forest of tomorrows. MANIFEST nourishes the souls and bodies of millions. MANIFEST is for you, your children, and countless generations after.</p>
+            </div>
+            <img src="/4.jpg" alt="What you believe, you become." class="section-image">
+        </div>
+        <p class="image-caption">What you believe, you become.</p>
+    </section>
+
+    <section id="insights">
+        <div class="article-header">
+            <h2>What is MANIFEST?</h2>
+            <span>7 min read</span>
+        </div>
+        <div class="section-content">
+            <img src="/5.jpg" alt="Mission: $69. Destiny: 69B." class="section-image">
+            <div class="section-text">
+                <ul>
+                    <li class="premium-border">Movement with Soul: MANIFEST is the first movement coin with a soul mission to $69B.</li>
+                    <li>Ritual Coin: MANIFEST is a ritual coin every buyback, every post, every holder is part of the ritual.</li>
+                    <li>Treasury Strategy: MANIFEST is the world's first movement coin with a treasury strategy. Structure + culture.</li>
+                    <li>Belief Into Action: MANIFEST is belief turned into action, and action scaled into freedom.</li>
+                    <li>Cultural Flywheel: MANIFEST is a cultural flywheel, designed to compound belief into $69B.</li>
+                    <li>Mirror of Belief: MANIFEST is a mirror. It's the belief you have in yourself, reflected on-chain.</li>
+                </ul>
+            </div>
+        </div>
+        <p class="image-caption">Mission: $69. Destiny: 69B.</p>
+    </section>
+
+    <section id="token-info">
+        <div class="article-header">
+            <h2>Token Info</h2>
+            <span>3 min read</span>
+        </div>
+        <div class="section-content">
+            <div class="section-text">
+                <p class="premium-border"><strong>Ticker:</strong> $MANIFEST</p>
+                <p><strong>Contract:</strong> 0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST</p>
+                <p><strong>Price:</strong> ~$0.0041 (as of latest data)</p>
+                <p><strong>Market Cap:</strong> ~$3.4M</p>
+                <p><strong>Total Supply:</strong> 1,000,000,000</p>
+                <p><strong>Circulating Supply:</strong> 813,584,268</p>
+            </div>
+        </div>
+        <div id="dexscreener-embed">
+            <iframe src="https://dexscreener.com/sui/0x15a1adef56e1b716c29a6ce7df539fd7b8080da283199c92c6caa6f641a61c3f?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"></iframe>
+        </div>
+        <div class="buy-buttons">
+            <a href="https://dexscreener.com/sui/0x15a1adef56e1b716c29a6ce7df539fd7b8080da283199c92c6caa6f641a61c3f" target="_blank" class="buy-btn">View on Dexscreener</a>
+            <a href="https://www.mexc.com/dex/trade?pair_ca=0x15a1adef56e1b716c29a6ce7df539fd7b8080da283199c92c6caa6f641a61c3f&chain_id=130000&token_ca=0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST&from=search" target="_blank" class="buy-btn">Buy on MEXC DEX</a>
+            <a href="https://www.coingecko.com/en/coins/manifest-3" target="_blank" class="buy-btn">View on CoinGecko</a>
+        </div>
+    </section>
+
+    <section id="social">
+        <div class="article-header">
+            <h2>Join the Movement</h2>
+            <span>1 min read</span>
+        </div>
+        <div class="social-links">
+            <a href="https://x.com/manifestsui" target="_blank">X: @manifestsui</a>
+            <a href="https://t.me/manifestsui" target="_blank">TG: @manifestsui</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 by $MANIFEST. All rights reserved!</p>
+    </footer>
+
+    <script>
+        function toggleNav() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+            const hamburger = document.querySelector('.hamburger');
+            hamburger.innerHTML = menu.classList.contains('active') ? '&#10005;' : '&#9776;';
+        }
+
+        function copyCA() {
+            const caText = '0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST';
+            navigator.clipboard.writeText(caText).then(() => {
+                const message = document.getElementById('copied-message');
+                message.style.display = 'inline';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
