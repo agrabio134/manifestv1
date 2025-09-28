@@ -389,6 +389,30 @@
             font-size: 0.8em;
         }
 
+        /* Loading animation */
+        .loading {
+            color: #d4a017;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Price display styling */
+        .price-positive {
+            color: #22c55e;
+        }
+
+        .price-negative {
+            color: #ef4444;
+        }
+
+        .price-neutral {
+            color: #6b7280;
+        }
+
         /* Tablet Media Query */
         @media (max-width: 992px) {
             header {
@@ -826,10 +850,13 @@
             <div class="section-text">
                 <p class="premium-border"><strong>Ticker:</strong> $MANIFEST</p>
                 <p><strong>Contract:</strong> 0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST</p>
-                <p><strong>Price:</strong> ~$0.0041 (as of latest data)</p>
-                <p><strong>Market Cap:</strong> ~$3.4M</p>
-                <p><strong>Total Supply:</strong> 1,000,000,000</p>
-                <p><strong>Circulating Supply:</strong> 813,584,268</p>
+                <p><strong>Price:</strong> <span id="token-price" class="loading">Loading...</span></p>
+                <p><strong>Market Cap:</strong> <span id="market-cap" class="loading">Loading...</span></p>
+                <p><strong>24h Volume:</strong> <span id="volume-24h" class="loading">Loading...</span></p>
+                <p><strong>Total Supply:</strong> <span id="total-supply" class="loading">Loading...</span></p>
+                <p><strong>Circulating Supply:</strong> <span id="circulating-supply" class="loading">Loading...</span></p>
+                <p><strong>Holders:</strong> <span id="holders-count" class="loading">Loading...</span></p>
+                <p><strong>Last Updated:</strong> <span id="last-updated" class="loading">Loading...</span></p>
             </div>
         </div>
         <div id="dexscreener-embed">
@@ -854,19 +881,164 @@
     </section>
 
     <footer>
+        <p>MANIFEST is a meme token for entertainment only. No association with luxury brands. All content is parody/satire. No intrinsic value or financial return expected.</p>
         <p>© 2025 by $MANIFEST. All rights reserved!</p>
     </footer>
 
     <script>
+        // Token contract address
+        const TOKEN_CONTRACT = '0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST';
+        
+        // API endpoints (using public APIs that support CORS)
+        const DEXSCREENER_API = 'https://api.dexscreener.com/latest/dex/tokens/' + TOKEN_CONTRACT;
+        const BIRDEYE_API = 'https://public-api.birdeye.so/defi/token_overview?address=' + TOKEN_CONTRACT;
+        
+        // Format numbers with appropriate suffixes
+        function formatNumber(num) {
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+            return num.toFixed(2);
+        }
+
+        // Format currency values
+        function formatCurrency(value, decimals = 6) {
+            if (value < 0.01) {
+                return ' + ', value.toFixed(decimals);
+            }
+            return ' + ', value.toFixed(2)
+        }
+
+        // Format date
+        function formatDate(timestamp) {
+            return new Date(timestamp).toLocaleString();
+        }
+
+        // Fetch token data from multiple sources
+        async function fetchTokenData() {
+            try {
+                // Try DexScreener first
+                const response = await fetch(DEXSCREENER_API);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.pairs && data.pairs.length > 0) {
+                        updateTokenInfo(data.pairs[0]);
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.log('DexScreener API failed:', error);
+            }
+
+            // Fallback to static data from the provided JSON
+            const fallbackData = {
+                "priceUsd": "0.004218799927237294",
+                "volumeUsd": "6156009.5625482135413842958645092",
+                "totalSupply": "999999963.4918668",
+                "circulatingSupply": "813584268", // Calculated from total - burned
+                "holdersCount": 1455,
+                "updatedAt": new Date().toISOString()
+            };
+            
+            updateTokenInfoFallback(fallbackData);
+        }
+
+        // Update UI with token data from API
+        function updateTokenInfo(pairData) {
+            try {
+                const price = parseFloat(pairData.priceUsd || 0);
+                const volume24h = parseFloat(pairData.volume?.h24 || 0);
+                const marketCap = parseFloat(pairData.marketCap || 0);
+                
+                document.getElementById('token-price').textContent = formatCurrency(price);
+                document.getElementById('market-cap').textContent = formatNumber(marketCap);
+                document.getElementById('volume-24h').textContent = formatNumber(volume24h);
+                document.getElementById('total-supply').textContent = formatNumber(parseFloat(pairData.baseToken?.totalSupply || 1000000000));
+                document.getElementById('circulating-supply').textContent = formatNumber(813584268); // From static data
+                document.getElementById('holders-count').textContent = '1,455'; // From static data
+                document.getElementById('last-updated').textContent = formatDate(Date.now());
+                
+                // Add price change color if available
+                const priceChange = parseFloat(pairData.priceChange?.h24 || 0);
+                const priceElement = document.getElementById('token-price');
+                if (priceChange > 0) {
+                    priceElement.className = 'price-positive';
+                } else if (priceChange < 0) {
+                    priceElement.className = 'price-negative';
+                } else {
+                    priceElement.className = 'price-neutral';
+                }
+            } catch (error) {
+                console.error('Error updating token info:', error);
+                updateTokenInfoFallback();
+            }
+        }
+
+        // Update UI with fallback static data
+        function updateTokenInfoFallback(data = null) {
+            const staticData = data || {
+                "priceUsd": "0.004218799927237294",
+                "volumeUsd": "6156009.5625482135413842958645092",
+                "totalSupply": "999999963.4918668",
+                "circulatingSupply": "813584268",
+                "holdersCount": 1455,
+                "updatedAt": new Date().toISOString()
+            };
+
+            const price = parseFloat(staticData.priceUsd);
+            const volume24h = parseFloat(staticData.volumeUsd);
+            const totalSupply = parseFloat(staticData.totalSupply);
+            const circulatingSupply = parseFloat(staticData.circulatingSupply);
+            const marketCap = price * circulatingSupply;
+
+            document.getElementById('token-price').textContent = formatCurrency(price);
+            document.getElementById('market-cap').textContent = formatNumber(marketCap);
+            document.getElementById('volume-24h').textContent = formatNumber(volume24h);
+            document.getElementById('total-supply').textContent = formatNumber(totalSupply);
+            document.getElementById('circulating-supply').textContent = formatNumber(circulatingSupply);
+            document.getElementById('holders-count').textContent = staticData.holdersCount.toLocaleString();
+            document.getElementById('last-updated').textContent = formatDate(Date.now());
+            
+            document.getElementById('token-price').className = 'price-neutral';
+        }
+
+        // Copy CA function
         function copyCA() {
-            const caText = '0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST';
+            const caText = TOKEN_CONTRACT;
             navigator.clipboard.writeText(caText).then(() => {
                 const message = document.getElementById('copied-message');
                 message.style.display = 'inline';
                 setTimeout(() => {
                     message.style.display = 'none';
-                }, 2000);});
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy CA:', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = caText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const message = document.getElementById('copied-message');
+                message.style.display = 'inline';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 2000);
+            });
         }
+
+        // Auto-refresh data every 30 seconds
+        function startAutoRefresh() {
+            setInterval(fetchTokenData, 30000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchTokenData();
+            startAutoRefresh();
+        });
     </script>
 </body>
 </html>
