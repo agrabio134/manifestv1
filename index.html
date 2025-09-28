@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
     <title>MANIFEST</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Porsche+Next:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -114,44 +113,6 @@
             transform: rotate(0deg) scale(1.03);
         }
 
-        /* CA Styles */
-        .ca-container {
-            text-align: center;
-            margin: 20px auto;
-            max-width: 800px;
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .ca-text {
-            font-size: 1em;
-            color: #2a2a2a;
-            cursor: pointer;
-            word-break: break-all;
-            display: inline-block;
-            max-width: 100%;
-        }
-
-        .ca-text:hover {
-            color: #d4a017;
-        }
-
-        .copied-message {
-            display: none;
-            color: #d4a017;
-            font-weight: bold;
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.8);
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
-
         /* Navigation Styles */
         nav {
             background: linear-gradient(to bottom, #1a1a1a, #2a2a2a);
@@ -217,14 +178,6 @@
 
         .hamburger {
             display: none;
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            font-size: 1.5em;
-            color: #ffffff;
-            cursor: pointer;
-            z-index: 1001;
         }
 
         /* Section Styles */
@@ -422,6 +375,20 @@
             border: 0;
         }
 
+        .copied-message {
+            display: none;
+            color: #d4a017;
+            font-weight: bold;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
         /* Tablet Media Query */
         @media (max-width: 992px) {
             header {
@@ -486,10 +453,6 @@
                 gap: 30px;
                 flex-wrap: wrap;
             }
-
-            .ca-text {
-                font-size: 0.85em;
-            }
         }
 
         /* Mobile Media Query */
@@ -524,58 +487,46 @@
 
             /* Mobile Navigation */
             nav {
-                padding: 15px 20px;
-                position: relative;
+                padding: 10px 5px;
             }
 
             nav ul {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: #1a1a1a;
-                padding: 20px 0;
-                gap: 0;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            }
-
-            nav ul.active {
                 display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 8px;
+                flex-wrap: wrap;
+                padding: 0;
             }
 
             nav ul li {
-                width: 100%;
-                text-align: center;
-                padding: 15px 0;
-                border-bottom: 1px solid #333;
-            }
-
-            nav ul li:last-child {
-                border-bottom: none;
+                flex: none;
+                margin: 5px 0;
             }
 
             nav a {
-                display: block;
-                width: 100%;
-                padding: 10px;
-                font-size: 0.9em;
-                letter-spacing: 1px;
+                font-size: 0.7em;
+                letter-spacing: 0.5px;
+                padding: 8px 12px;
+                border-radius: 15px;
+                background: rgba(255,255,255,0.1);
+                transition: all 0.3s ease;
+            }
+
+            nav a:hover {
+                background: rgba(212, 160, 23, 0.3);
             }
 
             .ca-link {
-                font-size: 0.8em !important;
-                padding: 6px 12px !important;
+                font-size: 0.65em !important;
+                padding: 6px 10px !important;
             }
 
             .copied-message {
-                right: 10px;
-                font-size: 0.7em;
-            }
-
-            .hamburger {
-                display: block;
+                right: 5px;
+                font-size: 0.65em;
+                top: 10px;
+                transform: none;
             }
 
             /* Mobile Sections */
@@ -663,17 +614,6 @@
                 font-size: 1.2em;
             }
 
-            /* Mobile CA Container */
-            .ca-container {
-                margin: 15px auto;
-                padding: 8px 15px;
-            }
-
-            .ca-text {
-                font-size: 0.7em;
-                line-height: 1.4;
-            }
-
             /* Mobile Footer */
             footer {
                 padding: 30px 15px;
@@ -722,10 +662,6 @@
                 font-size: 1em;
             }
 
-            .ca-text {
-                font-size: 0.65em;
-            }
-
             .buy-btn {
                 font-size: 0.75em;
                 padding: 10px 15px;
@@ -754,10 +690,6 @@
                 padding: 15px 10px;
                 margin: 15px 5px;
             }
-
-            .ca-text {
-                font-size: 0.6em;
-            }
         }
     </style>
 </head>
@@ -772,7 +704,6 @@
     </div>
 
     <nav>
-        <div class="hamburger" onclick="toggleNav()">&#9776;</div>
         <ul id="nav-menu">
             <li><a href="#home">Home</a></li>
             <li><a href="#manifesto">Manifesto</a></li>
@@ -927,13 +858,6 @@
     </footer>
 
     <script>
-        function toggleNav() {
-            const menu = document.getElementById('nav-menu');
-            menu.classList.toggle('active');
-            const hamburger = document.querySelector('.hamburger');
-            hamburger.innerHTML = menu.classList.contains('active') ? '&#10005;' : '&#9776;';
-        }
-
         function copyCA() {
             const caText = '0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST';
             navigator.clipboard.writeText(caText).then(() => {
@@ -941,8 +865,7 @@
                 message.style.display = 'inline';
                 setTimeout(() => {
                     message.style.display = 'none';
-                }, 2000);
-            });
+                }, 2000);});
         }
     </script>
 </body>
