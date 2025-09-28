@@ -852,6 +852,7 @@
                 <p><strong>Contract:</strong> 0xc466c28d87b3d5cd34f3d5c088751532d71a38d93a8aae4551dd56272cfb4355::manifest::MANIFEST</p>
                 <p><strong>Price:</strong> <span id="token-price" class="loading">Loading...</span></p>
                 <p><strong>Market Cap:</strong> <span id="market-cap" class="loading">Loading...</span></p>
+                <p><strong>FDV:</strong> <span id="fdv" class="loading">Loading...</span></p>
                 <p><strong>24h Volume:</strong> <span id="volume-24h" class="loading">Loading...</span></p>
                 <p><strong>Total Supply:</strong> <span id="total-supply" class="loading">Loading...</span></p>
                 <p><strong>Circulating Supply:</strong> <span id="circulating-supply" class="loading">Loading...</span></p>
@@ -904,9 +905,9 @@
         // Format currency values
         function formatCurrency(value, decimals = 6) {
             if (value < 0.01) {
-                return ' + ', value.toFixed(decimals);
+                return ' +', value.toFixed(decimals);
             }
-            return ' + ', value.toFixed(2)
+            return ' +', value.toFixed(2);
         }
 
         // Format date
@@ -948,15 +949,19 @@
             try {
                 const price = parseFloat(pairData.priceUsd || 0);
                 const volume24h = parseFloat(pairData.volume?.h24 || 0);
-                const marketCap = parseFloat(pairData.marketCap || 0);
-                
+                const totalSupply = 1000000000; // 1B total supply
+                const circulatingSupply = 813584268; // From static data
+                const marketCap = price * circulatingSupply; // Correct market cap calculation
+                const fdv =price * totalSupply; // This is actually FDV, not market cap
+
                 document.getElementById('token-price').textContent = formatCurrency(price);
                 document.getElementById('market-cap').textContent = formatNumber(marketCap);
                 document.getElementById('volume-24h').textContent = formatNumber(volume24h);
-                document.getElementById('total-supply').textContent = formatNumber(parseFloat(pairData.baseToken?.totalSupply || 1000000000));
-                document.getElementById('circulating-supply').textContent = formatNumber(813584268); // From static data
-                document.getElementById('holders-count').textContent = '1,455'; // From static data
+                document.getElementById('total-supply').textContent = formatNumber(totalSupply);
+                document.getElementById('circulating-supply').textContent = formatNumber(circulatingSupply);
+                document.getElementById('holders-count').textContent = '1,455';
                 document.getElementById('last-updated').textContent = formatDate(Date.now());
+                document.getElementById('fdv').textContent = formatNumber(fdv);
                 
                 // Add price change color if available
                 const priceChange = parseFloat(pairData.priceChange?.h24 || 0);
@@ -977,9 +982,9 @@
         // Update UI with fallback static data
         function updateTokenInfoFallback(data = null) {
             const staticData = data || {
-                "priceUsd": "0.004218799927237294",
-                "volumeUsd": "6156009.5625482135413842958645092",
-                "totalSupply": "999999963.4918668",
+                "priceUsd": "0.004219",
+                "volumeUsd": "175500",
+                "totalSupply": "1000000000",
                 "circulatingSupply": "813584268",
                 "holdersCount": 1455,
                 "updatedAt": new Date().toISOString()
@@ -989,7 +994,7 @@
             const volume24h = parseFloat(staticData.volumeUsd);
             const totalSupply = parseFloat(staticData.totalSupply);
             const circulatingSupply = parseFloat(staticData.circulatingSupply);
-            const marketCap = price * circulatingSupply;
+            const marketCap = price * circulatingSupply; // Market Cap = Price × Circulating Supply
 
             document.getElementById('token-price').textContent = formatCurrency(price);
             document.getElementById('market-cap').textContent = formatNumber(marketCap);
